@@ -11,6 +11,8 @@ import com.muthoni.homecare_connect.ui.theme.Screens.Home.HousekeeperScreen
 import com.muthoni.homecare_connect.ui.theme.Screens.Login.LoginScreen
 import com.muthoni.homecare_connect.ui.theme.Screens.Register.RegisterScreen
 import com.muthoni.homecare_connect.ui.theme.Screens.Services.AddService
+import com.muthoni.homecare_connect.ui.theme.Screens.Services.DeepCleaning
+import com.muthoni.homecare_connect.ui.theme.Screens.Services.Laundry
 import com.muthoni.homecare_connect.ui.theme.Screens.Services.UpdateService
 
 
@@ -34,6 +36,12 @@ fun AppNavHost(modifier: Modifier = Modifier, navController: NavHostController =
         }
         composable(ROUTE_UPDATE_SERVICE+ "/{id}"){passedData ->
             UpdateService(navController,passedData.arguments?.getString("id")!!)
+        }
+        composable(ROUTE_DEEP_CLEANING){
+            DeepCleaning(navController)
+        }
+        composable(ROUTE_LAUNDRY){
+            Laundry(navController)
         }
 
     }

@@ -30,6 +30,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.muthoni.homecare_connect.R
+import com.muthoni.homecare_connect.navigation.ROUTE_ADD_SERVICE
+import com.muthoni.homecare_connect.navigation.ROUTE_UPDATE_SERVICE
+import com.muthoni.homecare_connect.navigation.ROUTE_UPLOAD_SERVICE
+import com.muthoni.homecare_connect.navigation.ROUTE_VIEW_SERVICE
 
 @Composable
 fun HousekeeperScreen(navController: NavHostController) {
@@ -60,12 +64,13 @@ fun HousekeeperScreen(navController: NavHostController) {
             // Title
             Text(
                 text = "Welcome to Homecare Connect",
+                color = Color.Black,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
             Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = "Matched for Cleanliness",
-                color = Color.Unspecified,
+                color = Color.Black,
                 fontFamily = FontFamily.SansSerif,
                 fontSize = 25.sp
             )
@@ -75,6 +80,7 @@ fun HousekeeperScreen(navController: NavHostController) {
                 value = location,
                 onValueChange = { setLocation(it) },
                 label = { Text("Enter Location") },
+
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 16.dp)
@@ -91,15 +97,43 @@ fun HousekeeperScreen(navController: NavHostController) {
                     .padding(bottom = 16.dp)
             )
 
-            // Button to accept request
+
             Button(
-                onClick = {
+                onClick = { navController.navigate(ROUTE_ADD_SERVICE)
                     // You can perform action to accept the request here
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Accept Request")
+                Text("Add my services")
             }
+            Button(
+                onClick = { navController.navigate(ROUTE_UPDATE_SERVICE)
+                    // You can perform action to accept the request here
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Updating my services")
+            }
+            Button(
+                onClick = { navController.navigate(ROUTE_UPLOAD_SERVICE)
+                    // You can perform action to accept the request here
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Uploading my services")
+            }
+            Button(
+                onClick = { navController.navigate(ROUTE_VIEW_SERVICE)
+                    // You can perform action to accept the request here
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("View My services")
+            }
+
+
+            // Button to accept request
+
         }
         Column(
             modifier = Modifier

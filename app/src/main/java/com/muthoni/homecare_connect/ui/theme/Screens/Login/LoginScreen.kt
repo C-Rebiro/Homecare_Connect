@@ -63,13 +63,13 @@ fun LoginScreen(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally) {
 
         Text(text = "Login here",
-            color = Color.Cyan,
+            color = Color.Black,
             fontFamily = FontFamily.Cursive,
             fontSize = 30.sp)
         Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedTextField(value =email , onValueChange = {email=it},
-            label = { Text(text = "Enter Email") },
+            label = { Text(text = "Enter Email", color = Color.Black) },
             leadingIcon = { Icon(imageVector = Icons.Default.Email,
                 contentDescription = "email")
             },
@@ -82,7 +82,7 @@ fun LoginScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedTextField(value =pass , onValueChange = {pass=it},
-            label = { Text(text = "Enter Password") },
+            label = { Text(text = "Enter Password", color = Color.Black) },
             leadingIcon = { Icon(imageVector = Icons.Default.Lock,
                 contentDescription = "pass")
             },

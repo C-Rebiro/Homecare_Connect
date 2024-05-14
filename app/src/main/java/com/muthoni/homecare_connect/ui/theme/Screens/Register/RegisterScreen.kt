@@ -41,7 +41,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.muthoni.homecare_connect.R
 import com.muthoni.homecare_connect.data.AuthViewModel
+import com.muthoni.homecare_connect.models.UserType
+import com.muthoni.homecare_connect.navigation.ROUTE_CLIENT_SCREEN
+import com.muthoni.homecare_connect.navigation.ROUTE_HOUSEKEEPER_SCREEN
 import com.muthoni.homecare_connect.navigation.ROUTE_LOGIN_SCREEN
+
+fun validateFields(name: String, email: String, pass: String, confirmpass: String, userType: UserType?): Boolean {
+    return !name.isBlank() && !email.isBlank() && !pass.isBlank() && pass == confirmpass && userType != null
+}
 
 @Composable
 fun RegisterScreen(navController: NavHostController) {
@@ -49,14 +56,10 @@ fun RegisterScreen(navController: NavHostController) {
     var name by remember { mutableStateOf(TextFieldValue("")) }
     var email by remember { mutableStateOf(TextFieldValue("")) }
     var pass by remember { mutableStateOf(TextFieldValue("")) }
-    var id by remember { mutableStateOf(TextFieldValue) }
     var confirmpass by remember { mutableStateOf(TextFieldValue("")) }
-    var userType by remember { mutableStateOf("") }
+    var userType by remember { mutableStateOf<UserType?>(null) }
     var context = LocalContext.current
 
-    fun updateUserType(type: String) {
-        userType = type
-    }
 
 
 
@@ -79,7 +82,7 @@ fun RegisterScreen(navController: NavHostController) {
 
             Text(
                 text = "Register here",
-                color = Color.Cyan,
+                color = Color.Black,
                 fontFamily = FontFamily.Cursive,
                 fontSize = 30.sp
             )
@@ -87,7 +90,7 @@ fun RegisterScreen(navController: NavHostController) {
 
             OutlinedTextField(
                 value = name, onValueChange = { name = it },
-                label = { Text(text = "Enter name") },
+                label = { Text(text = "Enter name",  color = Color.Black) },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Person,
@@ -103,7 +106,7 @@ fun RegisterScreen(navController: NavHostController) {
 
             OutlinedTextField(
                 value = email, onValueChange = { email = it },
-                label = { Text(text = "Enter email") },
+                label = { Text(text = "Enter email",  color = Color.Black) },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Email,
@@ -119,7 +122,7 @@ fun RegisterScreen(navController: NavHostController) {
 
             OutlinedTextField(
                 value = pass, onValueChange = { pass = it },
-                label = { Text(text = "Enter password") },
+                label = { Text(text = "Enter password",  color = Color.Black) },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Lock,
@@ -136,7 +139,7 @@ fun RegisterScreen(navController: NavHostController) {
                 value = confirmpass, onValueChange = {
                     confirmpass = it
                 },
-                label = { Text(text = "Enter Confirm Pass") },
+                label = { Text(text = "Enter Confirm Pass", color = Color.Black) },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Lock,
@@ -154,7 +157,7 @@ fun RegisterScreen(navController: NavHostController) {
             // User type selection
             Text(
                 text = "Select User Type:",
-                color = Color.White,
+                color = Color.Black,
                 fontSize = 25.sp,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -163,57 +166,69 @@ fun RegisterScreen(navController: NavHostController) {
                 horizontalArrangement = Arrangement.Center
             ) {
                 RadioButton(
-                    selected = userType == "Client",
-                    onClick = { updateUserType("Client") }
-
+                    selected = userType == UserType.Client,
+                    onClick = { userType = UserType.Client }
                 )
                 Text(
                     text = "Client",
-                    color = Color.White,
+                    color = Color.Black,
                     fontSize = 20.sp,
                     modifier = Modifier
                 )
 
                 RadioButton(
-                    selected = userType == "Housekeeper",
-                    onClick = { updateUserType("Housekeeper")  },
+                    selected = userType == UserType.Housekeeper,
+                    onClick = { userType = UserType.Housekeeper },
                     modifier = Modifier.padding(start = 16.dp)
                 )
                 Text(
                     text = "Housekeeper",
-                    color = Color.White,
+                    color = Color.Black,
                     fontSize = 20.sp,
                     modifier = Modifier
                 )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
-
-
             Button(
                 onClick = {
-                    val myregister= AuthViewModel(navController,context)
-                    myregister.signup(email.text.trim(), pass.text.trim(), confirmpass.text.trim() ,userType)
-
-                }, modifier = Modifier.fillMaxWidth()) {
-                Text(text = "Register ")
+                    if (validateFields(name.text, email.text, pass.text, confirmpass.text, userType)) {
+                        //val authViewModel = AuthViewModel(navController, LocalContext.current)
+                        //authViewModel.signup(email.text.trim(), pass.text.trim(), confirmpass.text.trim())
+                        when (userType) {
+                            UserType.Client -> navController.navigate(ROUTE_CLIENT_SCREEN)
+                            UserType.Housekeeper -> navController.navigate(ROUTE_HOUSEKEEPER_SCREEN)
+                            null -> TODO()
+                        }
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Register")
             }
+
             Spacer(modifier = Modifier.height(20.dp))
 
-            Button(onClick = {
-                navController.navigate(ROUTE_LOGIN_SCREEN)
-            }, modifier = Modifier.fillMaxWidth()) {
+            Button(
+                onClick = { navController.navigate(ROUTE_LOGIN_SCREEN) },
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text(text = "Have an Account? Click to Login")
             }
-
         }
     }
 }
 
-@Preview
 @Composable
-private fun Registerprev() {
+@Preview
+fun RegisterPreview() {
     RegisterScreen(rememberNavController())
-
 }
 
+fun validateFields(name: TextFieldValue, email: TextFieldValue, password: TextFieldValue, confirmPassword: TextFieldValue, userType: UserType?): Boolean {
+    return name.text.isNotBlank() &&
+            email.text.isNotBlank() &&
+            password.text.isNotBlank() &&
+            confirmPassword.text.isNotBlank() &&
+            password.text == confirmPassword.text &&
+            userType != null
+}

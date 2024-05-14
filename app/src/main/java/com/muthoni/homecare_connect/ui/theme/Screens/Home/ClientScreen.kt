@@ -40,6 +40,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.muthoni.homecare_connect.R
+import com.muthoni.homecare_connect.navigation.ROUTE_DEEP_CLEANING
+import com.muthoni.homecare_connect.navigation.ROUTE_LAUNDRY
 
 @Composable
 fun ClientScreen(navController: NavHostController) {
@@ -63,7 +65,7 @@ fun ClientScreen(navController: NavHostController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
@@ -100,20 +102,19 @@ fun ClientScreen(navController: NavHostController) {
             // Title
             Text(
                 text = "Welcome to Homecare Connect",
+                color = Color.White,
                 fontSize = 30.sp,
                 fontFamily = FontFamily.Cursive,
-                modifier = Modifier.padding(bottom = 16.dp)
+                modifier = Modifier.padding(bottom = 16.dp, top = 8.dp)
             )
             Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = "Matched for Cleanliness",
-                color = Color.Unspecified,
+                color = Color.White,
                 fontFamily = FontFamily.SansSerif,
                 fontSize = 25.sp
             )
 
-
-            // Location input field
             OutlinedTextField(
                 value = location,
                 onValueChange = { setLocation(it) },
@@ -129,22 +130,45 @@ fun ClientScreen(navController: NavHostController) {
                     .padding(bottom = 16.dp)
             )
 
-            // Budget input field
             OutlinedTextField(
-                value = budget,
-                onValueChange = { setBudget(it) },
+                value = location,
+                onValueChange = { setLocation(it) },
                 label = { Text("Enter Budget") },
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Default.Create,
+                        imageVector = Icons.Default.LocationOn,
                         contentDescription = "budget"
                     )
                 },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 16.dp)
             )
+
+
+
+            Button(
+                onClick = { navController.navigate(ROUTE_DEEP_CLEANING)
+                    // You can navigate to the next screen or perform action here
+                },
+                modifier = Modifier.fillMaxWidth()
+                    .padding(top = 24.dp)
+            ) {
+
+                Text("View deep cleaning Services")
+            }
+
+            Button(
+                onClick = { navController.navigate(ROUTE_LAUNDRY)
+                    // You can navigate to the next screen or perform action here
+                },
+                modifier = Modifier.fillMaxWidth()
+                    .padding(top = 24.dp)
+            ) {
+
+                Text("View laundry Services")
+            }
+
 
             // Button to navigate to next screen or perform action
             Button(
@@ -153,7 +177,7 @@ fun ClientScreen(navController: NavHostController) {
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Next")
+                Text("Callings had")
             }
         }
         Column(
